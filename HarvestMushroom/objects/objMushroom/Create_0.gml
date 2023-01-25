@@ -1,0 +1,3 @@
+
+
+myState = STATE.IDLE;
