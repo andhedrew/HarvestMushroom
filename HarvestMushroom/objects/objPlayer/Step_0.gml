@@ -65,12 +65,46 @@ switch myState
 		if _throw
 		{
 			
-			if place_meeting(myInteractZone.x, myInteractZone.y, objMushroom)
+			switch myFacing
 			{
-				var _mush = instance_place(myInteractZone.x, myInteractZone.y, objMushroom);
-				with _mush
+				case FACING.WEST:
+					var _mushroom_x = x-16;
+					var _mushroom_y = y;
+					var _mushroom_facing = FACING.EAST;
+				break;
+				case FACING.SOUTH:
+					var _mushroom_x = x;
+					var _mushroom_y = y-16;
+					var _mushroom_facing = FACING.NORTH;
+				break;
+				case FACING.EAST:
+					var _mushroom_x = x+16;
+					var _mushroom_y = y;
+					var _mushroom_facing = FACING.WEST;
+				break;
+				case FACING.NORTH:
+					var _mushroom_x = x;
+					var _mushroom_y = y+16;
+					var _mushroom_facing = FACING.SOUTH;
+				break;
+			}
+			
+			with myInteractZone
+			{
+				if place_meeting(x, y, objMushroom)
 				{
-					myState = STATE.MOVE;
+					var _mush = instance_place(x,y, objMushroom);
+					with _mush
+					{
+						
+						if !place_meeting(_mushroom_x,_mushroom_y, objWall)
+						{
+							myState = STATE.MOVE;
+							x = _mushroom_x
+							y = _mushroom_y
+							myFacing = _mushroom_facing;
+						}
+					}
 				}
 			}
 		}
